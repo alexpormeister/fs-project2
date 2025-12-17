@@ -1,47 +1,54 @@
-## README: Code Snippet API (Full Stack Project 2)
+# Snippet API
 
-### Project Overview
+This is the backend for the Code Snippet Library. It is a Node.js and Express API that connects to a MongoDB database to store and manage code snippets.
 
-This project implements a RESTful API for a Code Snippet Library using the **MERN stack** (MongoDB, Express, Node.js). It allows developers to save, retrieve, and filter their favorite code blocks. This backend serves as the foundation for a data-driven application, ensuring code is persistent and easily searchable by language.
+## How to Install and Run
 
-**Core Features:**
+### 1. Requirements
 
-- **CRUD Operations:** Create, Read (All, Filtered, By ID) for code snippets.
-- **Filtering:** Snippets can be filtered by `language` (e.g., `GET /api/snippets?lang=javascript`).
-- **Database:** MongoDB Atlas is used for persistent data storage.
+- You need Node.js installed.
+- You need a MongoDB database.
 
-### Installation and Local Run Steps
+### 2. Setup
 
-This API requires Node.js (version 18+) and npm.
+- Go to the snippet-api folder.
+- Run npm install to get the packages.
+- Create a .env file and add your connection:
+  MONGODB_URI=your_mongodb_link_here
+- Run node server.js to start the API.
 
-#### 1. Setup and Installation
+## How to Deploy on Render
 
-1. Clone the repository: `git clone [YOUR_REPO_URL]`
-2. Navigate to the project directory: `cd snippet-api`
-3. Install dependencies: `npm install`
+1. Create a new Web Service on Render and connect your GitHub repository.
+2. Set the Root Directory to snippet-api (or whichever folder your server.js is in).
+3. Set the Build Command to npm install.
+4. Set the Start Command to node server.js.
+5. Go to the Environment tab and add your MONGODB_URI.
 
-#### 2. Environment Variables
+## API Routes
 
-Create a file named `.env` in the project root and add your MongoDB Atlas connection string. This file is secured and ignored by Git by the `.gitignore`.
+The frontend talks to these routes:
 
-```env
-# DO NOT commit this file to GitHub!
-MONGODB_URI="[YOUR_SECURE_CONNECTION_STRING_HERE]"
-PORT=3000
-```
+- GET /api/snippets: Gets all snippets from the database.
+- POST /api/snippets: Saves a new snippet. Needs title, language, and code.
+- DELETE /api/snippets/:id: Deletes a snippet using its ID.
 
-3. Start the Server
-   Start the API server on http://localhost:3000.
-   npm start
+## Environment Variables
 
-API Endpoints
-The API implements the following five routes to meet project requirements:
-Verb,URL,Operation
-GET,/api/snippets,Returns all snippets (can be filtered by ?lang=).
-GET,/api/snippets/:id,Returns one document by ID.
-POST,/api/snippets,Creates a new snippet.
-PUT/PATCH,/api/snippets/:id,Updates a document by ID.
-DELETE,/api/snippets/:id,Deletes a document by ID.
+To make this work on Render, add these variables in the dashboard settings:
 
-Environment Variable Handling
-To maintain security, the MONGODB_URI is stored in a local .env file that is excluded from the repository. For deployment on Render, the variable is securely added in the service's Environment panel. This ensures no secrets are ever exposed in public code.
+| Variable    | What it does                                                  |
+| :---------- | :------------------------------------------------------------ |
+| MONGODB_URI | Your MongoDB connection string.                               |
+| PORT        | The port the server runs on (Render sets this automatically). |
+
+## Libraries Used
+
+- Express: To handle the routes.
+- Mongoose: To talk to MongoDB.
+- CORS: So the React frontend is allowed to connect.
+- Dotenv: To keep the database link secret.
+
+## Link for the working app
+
+https://snippet-frontend-2k3b.onrender.com
