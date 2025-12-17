@@ -6,14 +6,17 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Enable CORS so your React frontend can talk to this API
 app.use(cors());
 app.use(express.json());
 
+// Database Connection
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("DB Connection Error:", err));
 
+// Snippet Schema
 const snippetSchema = new mongoose.Schema({
   title: { type: String, required: true },
   language: { type: String, required: true, lowercase: true },
@@ -25,10 +28,14 @@ const snippetSchema = new mongoose.Schema({
 
 const Snippet = mongoose.model("Snippet", snippetSchema);
 
+// --- ROUTES ---
+
+// Health Check
 app.get("/", (req, res) => {
   res.send("Snippet API is running!");
 });
 
+// READ ALL (GET) - Supports filtering by ?lang=
 app.get("/api/snippets", async (req, res) => {
   try {
     const filter = {};
@@ -45,6 +52,7 @@ app.get("/api/snippets", async (req, res) => {
   }
 });
 
+// CREATE (POST)
 app.post("/api/snippets", async (req, res) => {
   try {
     const newSnippet = new Snippet(req.body);
@@ -55,6 +63,7 @@ app.post("/api/snippets", async (req, res) => {
   }
 });
 
+// READ ONE BY ID (GET)
 app.get("/api/snippets/:id", async (req, res) => {
   try {
     const snippet = await Snippet.findById(req.params.id);
@@ -65,6 +74,7 @@ app.get("/api/snippets/:id", async (req, res) => {
   }
 });
 
+// UPDATE (PUT)
 app.put("/api/snippets/:id", async (req, res) => {
   try {
     const updatedSnippet = await Snippet.findByIdAndUpdate(
@@ -80,6 +90,7 @@ app.put("/api/snippets/:id", async (req, res) => {
   }
 });
 
+// DELETE (DELETE)
 app.delete("/api/snippets/:id", async (req, res) => {
   try {
     const deletedSnippet = await Snippet.findByIdAndDelete(req.params.id);
